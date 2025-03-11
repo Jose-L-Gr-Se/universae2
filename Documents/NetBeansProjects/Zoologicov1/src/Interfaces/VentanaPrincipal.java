@@ -5,6 +5,11 @@
 package Interfaces;
 
 import java.awt.Color;
+import javax.swing.JLabel;
+import Utilidades.EstilosUtil;
+import java.awt.Image;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -17,8 +22,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      */
     public VentanaPrincipal() {
         initComponents();
+        
+        this.setLocationRelativeTo(this);
+        SetImageLabel(jLabel6, "stc/imagenes/PLANTAS.jpg");
     }
-
+public void SetImageLabel(JLabel jLabel6, String root){
+    ImageIcon image = new ImageIcon("src/imagenes/PLANTAS.jpg");
+    Icon icon;
+        icon = new ImageIcon(
+               image.getImage().getScaledInstance(jLabel6.getWidth(),jLabel6.getHeight(),Image.SCALE_DEFAULT));
+               jLabel6.setIcon(icon);
+               this.repaint();
+}
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -45,10 +61,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         setTitle("ZOOLÓGICO VIRTUAL");
         setIconImages(null);
 
-        jPanel1.setBackground(javax.swing.UIManager.getDefaults().getColor("windowBorder"));
+        jPanel1.setBackground(new java.awt.Color(245, 245, 247));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Sans Serif Collection", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(29, 29, 31));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("ZOOLÓGICO VIRTUAL");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 1170, -1));
@@ -56,38 +73,49 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/DALL·E 2025-03-06 17.13.56 - Diseña un fondo visual atractivo para una interfaz gráfica relacionada con un zoológico digital. Incluye elementos naturales como árboles frondosos, p.jpg"))); // NOI18N
         jLabel3.setText("jLabel3");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 1170, 50));
+
+        jSeparator1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(209, 209, 214), 2, true));
         jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 1170, 0));
+
+        jSeparator2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(209, 209, 214), 2, true));
         jPanel1.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 1170, 10));
 
+        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(209, 209, 214), 2, true));
+        jPanel2.setForeground(new java.awt.Color(0, 122, 255));
         jPanel2.setLayout(new java.awt.GridLayout(2, 3));
 
-        jLabel5.setBackground(javax.swing.UIManager.getDefaults().getColor("windowBorder"));
+        jLabel5.setBackground(new java.awt.Color(255, 255, 255));
         jLabel5.setFont(new java.awt.Font("Sans Serif Collection", 1, 24)); // NOI18N
+        jLabel5.setForeground(java.awt.Color.black);
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("ANIMALES");
-        jLabel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+        jLabel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(209, 209, 214), 2, true));
         jPanel2.add(jLabel5);
 
-        jLabel4.setBackground(javax.swing.UIManager.getDefaults().getColor("windowBorder"));
+        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
         jLabel4.setFont(new java.awt.Font("Sans Serif Collection", 1, 24)); // NOI18N
+        jLabel4.setForeground(java.awt.Color.black);
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("PLANTAS");
-        jLabel4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+        jLabel4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(209, 209, 214), 2, true));
         jPanel2.add(jLabel4);
 
-        jLabel2.setBackground(javax.swing.UIManager.getDefaults().getColor("windowBorder"));
+        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Sans Serif Collection", 1, 24)); // NOI18N
+        jLabel2.setForeground(java.awt.Color.black);
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("HONGOS");
-        jLabel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+        jLabel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(209, 209, 214), 2, true));
         jPanel2.add(jLabel2);
 
+        jLabel7.setBackground(new java.awt.Color(255, 255, 255));
         jLabel7.setFont(new java.awt.Font("Sans Serif Collection", 1, 24)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 122, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ZORRO.jpg"))); // NOI18N
         jLabel7.setText("jLabel7");
         jLabel7.setToolTipText("");
-        jLabel7.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+        jLabel7.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(209, 209, 214), 2, true));
         jLabel7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -102,10 +130,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jPanel2.add(jLabel7);
 
+        jLabel6.setBackground(new java.awt.Color(255, 255, 255));
         jLabel6.setFont(new java.awt.Font("Sans Serif Collection", 1, 24)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 122, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/PLANTAS.jpg"))); // NOI18N
-        jLabel6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+        jLabel6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(209, 209, 214), 2, true));
         jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel6.setDisabledIcon(null);
         jLabel6.setMaximumSize(new java.awt.Dimension(300, 200));
@@ -115,18 +145,32 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel6MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel6MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel6MouseExited(evt);
+            }
         });
         jPanel2.add(jLabel6);
 
+        jLabel8.setBackground(new java.awt.Color(255, 255, 255));
         jLabel8.setFont(new java.awt.Font("Sans Serif Collection", 1, 24)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 122, 255));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/HONGOS.jpg"))); // NOI18N
         jLabel8.setText("jLabel8");
-        jLabel8.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+        jLabel8.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(209, 209, 214), 2, true));
         jLabel8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel8MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel8MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel8MouseExited(evt);
             }
         });
         jPanel2.add(jLabel8);
@@ -149,30 +193,62 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel7MouseEntered
+    private void jLabel6MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseExited
+ jLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(204, 204, 204), 1));
+        jLabel4.setForeground(Color.BLACK);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel6MouseExited
 
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+    private void jLabel8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseEntered
+jLabel8.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(0, 153, 51), 3));
+        jLabel2.setForeground(new Color(0, 153, 51));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel8MouseEntered
+
+    private void jLabel8MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseExited
+jLabel8.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(204, 204, 204), 1));
+        jLabel2.setForeground(Color.BLACK);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel8MouseExited
+
+    
+    private void jLabel7MouseEntered(java.awt.event.MouseEvent evt) {
+        jLabel7.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(0, 153, 51), 3));
+        jLabel5.setForeground(new Color(0, 153, 51));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {
         abrirVentanaAnimales();
-    }//GEN-LAST:event_jLabel7MouseClicked
+    }
 
-    private void jLabel7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseExited
-        // TODO add your handling code here:
+    private void jLabel7MouseExited(java.awt.event.MouseEvent evt) {
+        jLabel7.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(204, 204, 204), 1));
+        jLabel5.setForeground(Color.BLACK);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+    }
 
-    }//GEN-LAST:event_jLabel7MouseExited
-
-    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-        // TODO add your handling code here:
+    
+    private void jLabel6MouseEntered(java.awt.event.MouseEvent evt) {
+        jLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(0, 153, 51), 3));
+        jLabel4.setForeground(new Color(0, 153, 51));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }
+    
+private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {
         abrirVentanaPlantas();
-    }//GEN-LAST:event_jLabel6MouseClicked
+    }
 
-    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        // TODO add your handling code here:
+    
+    
+    
+        
+private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {
         abrirVentanaHongos();
-    }//GEN-LAST:event_jLabel8MouseClicked
+    }
 
+    
     /**
      * @param args the command line arguments
      */
@@ -208,18 +284,32 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
     }
     
-    private void abrirVentanaAnimales(){
+    private void abrirVentanaAnimales() {
         VentanaAnimales ventanaAnimales = new VentanaAnimales();
+        ventanaAnimales.setLocationRelativeTo(null);
+        ventanaAnimales.setTitle("Gestión de Animales - Zoológico Virtual");
         ventanaAnimales.setVisible(true);
     }
-        private void abrirVentanaPlantas() {
-        VentanaPlantas VentanaPlantas = new VentanaPlantas();
-        VentanaPlantas.setVisible(true);
+
+    private void abrirVentanaPlantas() {
+        VentanaPlantas ventanaPlantas = new VentanaPlantas();
+        ventanaPlantas.setLocationRelativeTo(null);
+        ventanaPlantas.setTitle("Gestión de Plantas - Zoológico Virtual");
+        ventanaPlantas.setVisible(true);
     }
-        private void abrirVentanaHongos(){
-            VentanaHongos ventanaHongos = new VentanaHongos();
-            ventanaHongos.setVisible(true);
-        }
+
+    private void abrirVentanaHongos() {
+        VentanaHongos ventanaHongos = new VentanaHongos();
+        ventanaHongos.setLocationRelativeTo(null);
+        ventanaHongos.setTitle("Gestión de Hongos - Zoológico Virtual");
+        ventanaHongos.setVisible(true);
+    }
+
+        
+                
+        
+    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

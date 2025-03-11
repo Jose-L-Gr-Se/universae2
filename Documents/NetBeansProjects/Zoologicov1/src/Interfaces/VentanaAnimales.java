@@ -8,9 +8,19 @@ import Objetos.Animal;
 import Objetos.Aves;
 import Objetos.Mamiferos;
 import Objetos.Reptiles;
+import Utilidades.EstilosUtil;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JPanel;
+import java.awt.FlowLayout;
+import javax.swing.JComboBox;
+import Utilidades.BuscadorUtil;
+
 
 /**
  *
@@ -23,22 +33,42 @@ public class VentanaAnimales extends javax.swing.JFrame {
      */
 private DefaultTableModel modelo;
 private ArrayList<Animal> listaAnimales;
+private JTextField txtBuscar;
+private JComboBox<String> comboFiltro;
 
 
 public VentanaAnimales() {
     initComponents();
+    ComboTipoAnimal.addActionListener(e -> actualizarEtiquetaCaracteristica());
     inicializarTabla();
     cargarDatosEjemplo();
     limpiarCampos();
 }
 
 private void inicializarTabla() {
-    modelo = new DefaultTableModel(
-        new Object[][] {},
-        new String[] {"Tipo", "Nombre", "Edad", "Alimentación", "Sexo", "Peso", "Especie", "Característica"}
-            );
+    modelo = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false; // Hacer la tabla no editable
+        }
+    };
+    
+    // Configurar columnas
+    String[] columnas = {"Tipo", "Nombre", "Edad", "Alimentación", "Sexo", "Peso", "Especie", "Característica"};
+    modelo.setColumnIdentifiers(columnas);
+    
+    // Aplicar estilos a la tabla
     jTable1.setModel(modelo);
+    EstilosUtil.aplicarEstiloTabla(jTable1);
+    
+    // Centrar contenido de las celdas
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+    for (int i = 0; i < jTable1.getColumnCount(); i++) {
+        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
     }
+}
+
 
 private void limpiarCampos() {
     ComboTipoAnimal.setSelectedIndex(0);
@@ -50,6 +80,43 @@ private void limpiarCampos() {
     txtEspecie.setText("");
     txtCaracteristica.setText("");
 }
+
+private void actualizarEtiquetaCaracteristica() {
+    String tipoSeleccionado = (String) ComboTipoAnimal.getSelectedItem();
+                txtCaracteristica.setVisible(false);
+
+    //Removemos el campo actual antes de cambiarlo
+
+    
+    switch (tipoSeleccionado) {
+        case "Mamiferos":
+            jLabel9.setText("Tipo de Pelo");
+            txtCaracteristica.setVisible(true);
+                        checkBoxCaracteristica.setVisible(false);
+
+            break;
+        case "Aves":
+            jLabel9.setText("Tamaño Alas");
+            txtCaracteristica.setVisible(true);
+            checkBoxCaracteristica.setVisible(false);
+
+            break;
+        case "Reptiles":
+            jLabel9.setText("Venenoso");
+            txtCaracteristica.setVisible(false);
+            checkBoxCaracteristica.setVisible(true);
+            break;
+        default:
+            jLabel9.setText("Característica");
+            txtCaracteristica.setVisible(true);
+                        checkBoxCaracteristica.setVisible(false);
+
+
+    }
+    
+    txtCaracteristica.setText(""); // Limpiar el campo cuando cambia la selección
+}
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -76,6 +143,7 @@ private void limpiarCampos() {
         txtSexo = new javax.swing.JTextField();
         txtPeso = new javax.swing.JTextField();
         txtEspecie = new javax.swing.JTextField();
+        checkBoxCaracteristica = new javax.swing.JCheckBox();
         txtCaracteristica = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -83,8 +151,6 @@ private void limpiarCampos() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestión de Animales");
-
-        jPanel1.setBackground(java.awt.Color.lightGray);
 
         jLabel1.setBackground(java.awt.Color.lightGray);
         jLabel1.setFont(new java.awt.Font("Sans Serif Collection", 1, 24)); // NOI18N
@@ -171,64 +237,74 @@ private void limpiarCampos() {
             }
         ));
         jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        jTable1.setCellSelectionEnabled(false);
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jTable1.setRowHeight(30);
         jTable1.setRowMargin(5);
-        jTable1.setRowSelectionAllowed(true);
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jTable1);
 
         jSplitPane1.setRightComponent(jScrollPane1);
 
-        jPanel3.setBackground(java.awt.Color.lightGray);
         jPanel3.setMinimumSize(new java.awt.Dimension(300, 600));
         jPanel3.setPreferredSize(new java.awt.Dimension(300, 600));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel2.setForeground(java.awt.Color.darkGray);
         jLabel2.setText("Tipo de Animal:");
+        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 10, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel3.setForeground(java.awt.Color.darkGray);
         jLabel3.setText("Nombre:");
+        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 66, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel4.setForeground(java.awt.Color.darkGray);
         jLabel4.setText("Edad:");
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 120, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel5.setForeground(java.awt.Color.darkGray);
         jLabel5.setText("Alimentación:");
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 174, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel6.setForeground(java.awt.Color.darkGray);
         jLabel6.setText("Sexo:");
+        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 228, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel7.setForeground(java.awt.Color.darkGray);
         jLabel7.setText("Peso:");
+        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 282, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel8.setForeground(java.awt.Color.darkGray);
         jLabel8.setText("Especie");
+        jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 336, -1, -1));
 
         jLabel9.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel9.setForeground(java.awt.Color.darkGray);
         jLabel9.setText("Característica");
+        jPanel3.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 390, -1, -1));
 
         ComboTipoAnimal.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         ComboTipoAnimal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar:", "Mamiferos", "Reptiles", "Aves" }));
         ComboTipoAnimal.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(ComboTipoAnimal, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 6, -1, -1));
 
         txtNombre.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         txtNombre.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 64, 165, -1));
 
         txtEdad.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         txtEdad.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(txtEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 118, 165, -1));
 
         txtAlimentacion.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         txtAlimentacion.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(txtAlimentacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 172, 165, -1));
 
         txtSexo.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         txtSexo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
@@ -237,16 +313,20 @@ private void limpiarCampos() {
                 txtSexoActionPerformed(evt);
             }
         });
+        jPanel3.add(txtSexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 226, 165, -1));
 
         txtPeso.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         txtPeso.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(txtPeso, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 280, 165, -1));
 
         txtEspecie.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         txtEspecie.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(txtEspecie, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 334, 165, -1));
+        jPanel3.add(checkBoxCaracteristica, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 400, -1, -1));
 
         txtCaracteristica.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
-        txtCaracteristica.setText("jTextField1");
         txtCaracteristica.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(txtCaracteristica, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 388, 165, -1));
 
         jButton1.setFont(new java.awt.Font("Sans Serif Collection", 1, 14)); // NOI18N
         jButton1.setText("AGREGAR");
@@ -256,6 +336,7 @@ private void limpiarCampos() {
                 jButton1ActionPerformed(evt);
             }
         });
+        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 483, -1, -1));
 
         jButton2.setFont(new java.awt.Font("Sans Serif Collection", 1, 14)); // NOI18N
         jButton2.setText("ELIMINAR");
@@ -265,6 +346,7 @@ private void limpiarCampos() {
                 jButton2MouseClicked(evt);
             }
         });
+        jPanel3.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 483, -1, -1));
 
         jButton3.setFont(new java.awt.Font("Sans Serif Collection", 1, 14)); // NOI18N
         jButton3.setText("EDITAR");
@@ -274,86 +356,7 @@ private void limpiarCampos() {
                 jButton3MouseClicked(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel9))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNombre)
-                    .addComponent(txtEdad)
-                    .addComponent(txtAlimentacion)
-                    .addComponent(txtSexo)
-                    .addComponent(txtPeso)
-                    .addComponent(txtEspecie)
-                    .addComponent(txtCaracteristica)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(ComboTipoAnimal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addContainerGap(25, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(ComboTipoAnimal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtAlimentacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(txtEspecie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(txtCaracteristica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(53, 53, 53)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addContainerGap(75, Short.MAX_VALUE))
-        );
+        jPanel3.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(109, 483, 73, -1));
 
         jSplitPane1.setLeftComponent(jPanel3);
 
@@ -411,6 +414,7 @@ private void limpiarCampos() {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
         // TODO add your handling code here:
     int filaSeleccionada = jTable1.getSelectedRow();
@@ -423,7 +427,28 @@ private void limpiarCampos() {
 
 
     }//GEN-LAST:event_jButton2MouseClicked
-
+private void aplicarEstilos() {
+        // Aplicar estilos a los botones
+        EstilosUtil.aplicarEstiloBoton(jButton1, "AGREGAR");
+        EstilosUtil.aplicarEstiloBoton(jButton2, "ELIMINAR");
+        EstilosUtil.aplicarEstiloBoton(jButton3, "EDITAR");
+        
+        // Aplicar estilos a los campos de texto
+        JTextField[] campos = {txtNombre, txtEdad, txtPeso, txtEspecie, txtCaracteristica};
+        for (JTextField campo : campos) {
+            EstilosUtil.aplicarEstiloCampoTexto(campo);
+        }
+        
+        // Aplicar estilos a la tabla
+        EstilosUtil.aplicarEstiloTabla(jTable1);
+        
+        // Configurar el panel principal
+        jPanel1.setBackground(EstilosUtil.COLOR_FONDO);
+        
+        // Configurar título
+        jLabel1.setFont(EstilosUtil.FUENTE_TITULO);
+        jLabel1.setForeground(EstilosUtil.COLOR_PRIMARIO);
+    }
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
         // TODO add your handling code here:
     int filaSeleccionada = jTable1.getSelectedRow();
@@ -446,7 +471,7 @@ private void limpiarCampos() {
 
 
     }//GEN-LAST:event_jButton3MouseClicked
-
+    
     private void txtSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSexoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSexoActionPerformed
@@ -488,6 +513,7 @@ private void limpiarCampos() {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ComboTipoAnimal;
+    private javax.swing.JCheckBox checkBoxCaracteristica;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -527,7 +553,7 @@ private void limpiarCampos() {
         } else if (animal instanceof Aves) {
             caracteristica = "Tamaño alas: " + ((Aves) animal).getTamañoAlas() + " m";
         } else if (animal instanceof Reptiles) {
-            caracteristica = "Venenoso: " + ((Reptiles) animal).isEsVenenoso();
+            caracteristica = "Venenoso: " + (((Reptiles) animal).isEsVenenoso() ? "Sí" : "No");
         }
         
         modelo.addRow(new Object[] {
@@ -541,6 +567,8 @@ private void limpiarCampos() {
             caracteristica,
         });
     }
+
+        }
 }// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    
 

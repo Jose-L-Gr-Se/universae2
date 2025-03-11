@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import Objetos.*;
+import Utilidades.EstilosUtil;
 
 /**
  *
@@ -24,6 +25,7 @@ private ArrayList<Hongos> listaHongos;
 
 public VentanaHongos() {
     initComponents();
+    ComboTipoHongo.addActionListener(e -> actualizarEtiquetaCaracteristica());
     inicializarTabla();
     cargarDatosEjemplo();
     limpiarCampos();
@@ -32,7 +34,7 @@ public VentanaHongos() {
 private void inicializarTabla() {
     modelo = new DefaultTableModel(
         new Object[][] {},
-        new String[] {"Tipo", "Nombre", "Edad", "Color", "Tóxico", "Especie", "Característica"}
+        new String[] {"Tipo", "Nombre", "Edad", "Color", "Especie", "Característica"}
     ) {
         @Override
         public boolean isCellEditable(int row, int column) {
@@ -40,6 +42,45 @@ private void inicializarTabla() {
         }
     };
     jTable1.setModel(modelo);
+   // Aplicar estilos a la tabla
+    jTable1.setModel(modelo);
+    EstilosUtil.aplicarEstiloTabla(jTable1);
+
+}
+private void actualizarEtiquetaCaracteristica() {
+    String tipoSeleccionado = (String) ComboTipoHongo.getSelectedItem();
+                txtCaracteristicaHongo.setVisible(false);
+
+    //Removemos el campo actual antes de cambiarlo
+
+    
+    switch (tipoSeleccionado) {
+        case "Seta":
+            jLabel8.setText("Tipo de Esporas");
+            txtCaracteristicaHongo.setVisible(true);
+            jCheckBox1.setVisible(false);
+
+            break;
+        case "Moho":
+            jLabel8.setText("Superficie");
+            txtCaracteristicaHongo.setVisible(true);
+            jCheckBox1.setVisible(false);
+
+            break;
+        case "Levadura":
+            jLabel8.setText("Uso Alimentario");
+            txtCaracteristicaHongo.setVisible(false);
+            jCheckBox1.setVisible(true);
+            break;
+        default:
+            jLabel8.setText("Característica");
+            txtCaracteristicaHongo.setVisible(true);
+            jCheckBox1.setVisible(false);
+
+
+    }
+    
+    txtCaracteristicaHongo.setText(""); // Limpiar el campo cuando cambia la selección
 }
 
 private void cargarDatosEjemplo() {
@@ -56,15 +97,16 @@ private void cargarDatosEjemplo() {
         } else if (hongo instanceof Moho) {
             caracteristica = "Superficie: " + ((Moho) hongo).getSuperficiePreferida();
         } else if (hongo instanceof Levadura) {
-            caracteristica = "Uso alimentario: " + ((Levadura) hongo).isSeUsaEnAlimentos();
+            caracteristica = "Uso alimentario: " + (((Levadura) hongo).isSeUsaEnAlimentos() ? "Sí" : "No");
         }
+        
+
         
         modelo.addRow(new Object[] {
             tipo,
             hongo.getNombre(),
             hongo.getEdad(),
             color,
-            hongo.isEsToxico(),
             hongo.getModoReproduccion(),
             caracteristica
         });
@@ -108,6 +150,7 @@ private void limpiarCampos() {
         txtColor = new javax.swing.JTextField();
         txtTamaño = new javax.swing.JTextField();
         txtEspecieHongo = new javax.swing.JTextField();
+        jCheckBox1 = new javax.swing.JCheckBox();
         txtCaracteristicaHongo = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -115,6 +158,8 @@ private void limpiarCampos() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestión de Animales");
+
+        jPanel1.setBackground(new java.awt.Color(245, 245, 247));
 
         jLabel1.setFont(new java.awt.Font("Sans Serif Collection", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -137,6 +182,8 @@ private void limpiarCampos() {
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
+
+        jSplitPane1.setBackground(new java.awt.Color(245, 245, 247));
 
         jTable1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
         jTable1.setFont(new java.awt.Font("Sans Serif Collection", 0, 10)); // NOI18N
@@ -198,62 +245,76 @@ private void limpiarCampos() {
             }
         ));
         jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        jTable1.setCellSelectionEnabled(false);
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jTable1.setRowHeight(30);
         jTable1.setRowMargin(5);
-        jTable1.setRowSelectionAllowed(true);
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jTable1);
 
         jSplitPane1.setRightComponent(jScrollPane1);
 
+        jPanel3.setBackground(new java.awt.Color(245, 245, 247));
         jPanel3.setMinimumSize(new java.awt.Dimension(300, 600));
         jPanel3.setPreferredSize(new java.awt.Dimension(300, 600));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel2.setText("Tipo de Hongo:");
+        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 10, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel3.setText("Nombre:");
+        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 66, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel4.setText("Edad:");
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 120, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel5.setText("Color:");
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 174, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel6.setText("Tamaño:");
+        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 228, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel7.setText("Especie:");
+        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 282, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel8.setText("Característica:");
+        jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 336, -1, -1));
 
         ComboTipoHongo.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         ComboTipoHongo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar:", "Seta", "Moho", "Levadura" }));
         ComboTipoHongo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(ComboTipoHongo, new org.netbeans.lib.awtextra.AbsoluteConstraints(126, 6, -1, -1));
 
         txtNombre.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         txtNombre.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(126, 64, 168, -1));
 
         txtEdad.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         txtEdad.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(txtEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(126, 118, 168, -1));
 
         txtColor.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         txtColor.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(txtColor, new org.netbeans.lib.awtextra.AbsoluteConstraints(126, 172, 168, -1));
 
         txtTamaño.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         txtTamaño.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(txtTamaño, new org.netbeans.lib.awtextra.AbsoluteConstraints(126, 226, 168, -1));
 
         txtEspecieHongo.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         txtEspecieHongo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(txtEspecieHongo, new org.netbeans.lib.awtextra.AbsoluteConstraints(126, 280, 168, -1));
+        jPanel3.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(126, 344, -1, -1));
 
         txtCaracteristicaHongo.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
-        txtCaracteristicaHongo.setText("jTextField1");
         txtCaracteristicaHongo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(txtCaracteristicaHongo, new org.netbeans.lib.awtextra.AbsoluteConstraints(124, 334, 170, -1));
 
         jButton1.setFont(new java.awt.Font("Sans Serif Collection", 1, 14)); // NOI18N
         jButton1.setText("AGREGAR");
@@ -268,6 +329,7 @@ private void limpiarCampos() {
                 jButton1ActionPerformed(evt);
             }
         });
+        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 483, -1, -1));
 
         jButton2.setFont(new java.awt.Font("Sans Serif Collection", 1, 14)); // NOI18N
         jButton2.setText("ELIMINAR");
@@ -277,6 +339,7 @@ private void limpiarCampos() {
                 jButton2MouseClicked(evt);
             }
         });
+        jPanel3.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 483, -1, -1));
 
         jButton3.setFont(new java.awt.Font("Sans Serif Collection", 1, 14)); // NOI18N
         jButton3.setText("EDITAR");
@@ -286,80 +349,7 @@ private void limpiarCampos() {
                 jButton3MouseClicked(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNombre)
-                    .addComponent(txtEdad)
-                    .addComponent(txtColor)
-                    .addComponent(txtTamaño)
-                    .addComponent(txtEspecieHongo)
-                    .addComponent(txtCaracteristicaHongo)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(ComboTipoHongo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addContainerGap(25, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(ComboTipoHongo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtTamaño, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(txtEspecieHongo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(txtCaracteristicaHongo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(107, 107, 107)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addContainerGap(75, Short.MAX_VALUE))
-        );
+        jPanel3.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(109, 483, 73, -1));
 
         jSplitPane1.setLeftComponent(jPanel3);
 
@@ -496,6 +486,7 @@ private void limpiarCampos() {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -9,7 +9,11 @@ package Interfaces;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import Objetos.*;
+import Utilidades.EstilosUtil;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -22,22 +26,34 @@ private ArrayList<Plantas> listaPlantas;
 
 public VentanaPlantas() {
     initComponents();
+    ComboTipo.addActionListener(e -> actualizarEtiquetaCaracteristica());
     inicializarTabla();
     cargarDatosEjemplo();
     limpiarCampos();
 }
 
 private void inicializarTabla() {
-    modelo = new DefaultTableModel(
-        new Object[][] {},
-        new String[] {"Tipo", "Nombre", "Edad", "Altura", "Tipo de Hoja", "Especie", "Característica"}
-    ) {
+    modelo = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int row, int column) {
-            return false;
+            return false; // Hacer la tabla no editable
         }
     };
+    
+    // Configurar columnas específicas para plantas
+    String[] columnas = {"Tipo", "Nombre", "Edad", "Altura", "Tipo Raiz", "Tiene Flores", "Característica"};
+    modelo.setColumnIdentifiers(columnas);
+    
+    // Aplicar estilos a la tabla
     jTable1.setModel(modelo);
+    EstilosUtil.aplicarEstiloTabla(jTable1);
+    
+    // Centrar el contenido de las celdas
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+    for (int i = 0; i < jTable1.getColumnCount(); i++) {
+        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    }
 }
 
 private void cargarDatosEjemplo() {
@@ -47,16 +63,19 @@ private void cargarDatosEjemplo() {
         String tipo = planta.getClass().getSimpleName();
         String caracteristica = "";
         String altura = "";
-        String tipoHoja = "";
+        String tipoRaiz = "";
         
         if (planta instanceof Arbol) {
             altura = ((Arbol) planta).getAltura();
             caracteristica = "Clima: " + planta.getClimaIdeal();
         } else if (planta instanceof Arbusto) {
-            caracteristica = "Tiene espinas: " + ((Arbusto) planta).isTieneEspinas();
+            caracteristica = "Tiene espinas: " + (((Arbusto) planta).isTieneEspinas() ? "Sí":"No");
         } else if (planta instanceof Hierba) {
-            caracteristica = "Medicinal: " + ((Hierba) planta).isEsMedicinal();
+            caracteristica = "Medicinal: " + (((Hierba) planta).isEsMedicinal()? "Sí":"No");
         }
+        
+        //Convertir tiene flores a sí o no
+        String tieneFlores = planta.isTieneFlores() ? "Sí" : "No";
         
         modelo.addRow(new Object[] {
             tipo,
@@ -64,7 +83,7 @@ private void cargarDatosEjemplo() {
             planta.getEdad(),
             altura,
             planta.getTipoRaiz(),
-            "Tiene flores: " + planta.isTieneFlores(),
+            tieneFlores,
             caracteristica
         });
     }
@@ -76,9 +95,46 @@ private void limpiarCampos() {
     txtEdad.setText("");
     txtAltura.setText("");
     txtTipoDeHoja.setText("");
-    txtEspecie.setText("");
-    txtCaracteristica.setText("");
+        txtCaracteristica.setText("");
 }
+
+private void actualizarEtiquetaCaracteristica() {
+    String tipoSeleccionado = (String) ComboTipo.getSelectedItem();
+                txtCaracteristica.setVisible(false);
+
+    //Removemos el campo actual antes de cambiarlo
+
+    
+    switch (tipoSeleccionado) {
+        case "Árbol":
+            jLabel8.setText("Clima");
+            txtCaracteristica.setVisible(true);
+            checkBoxCaracteristica.setVisible(false);
+
+            break;
+        case "Arbusto":
+            jLabel8.setText("Tiene Espinas");
+            txtCaracteristica.setVisible(false);
+            checkBoxCaracteristica.setVisible(true);
+
+            break;
+        case "Hierba":
+            jLabel8.setText("Medicinal");
+            txtCaracteristica.setVisible(false);
+            checkBoxCaracteristica.setVisible(true);
+            break;
+        default:
+            jLabel8.setText("Característica");
+            txtCaracteristica.setVisible(true);
+            checkBoxCaracteristica.setVisible(false);
+
+
+    }
+    
+    txtCaracteristica.setText(""); // Limpiar el campo cuando cambia la selección
+}
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -107,11 +163,12 @@ private void limpiarCampos() {
         txtEdad = new javax.swing.JTextField();
         txtAltura = new javax.swing.JTextField();
         txtTipoDeHoja = new javax.swing.JTextField();
-        txtEspecie = new javax.swing.JTextField();
+        checkBoxCaracteristica = new javax.swing.JCheckBox();
         txtCaracteristica = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestión de Animales");
@@ -198,10 +255,8 @@ private void limpiarCampos() {
             }
         ));
         jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        jTable1.setCellSelectionEnabled(false);
         jTable1.setRowHeight(30);
         jTable1.setRowMargin(5);
-        jTable1.setRowSelectionAllowed(true);
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jTable1);
 
@@ -209,37 +264,48 @@ private void limpiarCampos() {
 
         jPanel3.setMinimumSize(new java.awt.Dimension(300, 600));
         jPanel3.setPreferredSize(new java.awt.Dimension(300, 600));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel2.setText("Tipo de Planta:");
+        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 10, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel3.setText("Nombre:");
+        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 66, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel4.setText("Edad:");
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 120, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel5.setText("Altura:");
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 174, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
-        jLabel6.setText("Tipo de hoja:");
+        jLabel6.setText("Tipo de Raiz:");
+        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 228, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
-        jLabel7.setText("Especie:");
+        jLabel7.setText("Tiene Flores:");
+        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 282, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         jLabel8.setText("Característica:");
+        jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 336, -1, -1));
 
         ComboTipo.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         ComboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar:", "Árbol", "Arbusto", "Hierba" }));
         ComboTipo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(ComboTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(124, 6, -1, -1));
 
         txtNombre.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         txtNombre.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(124, 64, 170, -1));
 
         txtEdad.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         txtEdad.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(txtEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(124, 118, 170, -1));
 
         txtAltura.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         txtAltura.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
@@ -248,16 +314,16 @@ private void limpiarCampos() {
                 txtAlturaActionPerformed(evt);
             }
         });
+        jPanel3.add(txtAltura, new org.netbeans.lib.awtextra.AbsoluteConstraints(124, 172, 170, -1));
 
         txtTipoDeHoja.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
         txtTipoDeHoja.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
-
-        txtEspecie.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
-        txtEspecie.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(txtTipoDeHoja, new org.netbeans.lib.awtextra.AbsoluteConstraints(124, 226, 170, -1));
+        jPanel3.add(checkBoxCaracteristica, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 340, -1, -1));
 
         txtCaracteristica.setFont(new java.awt.Font("Sans Serif Collection", 0, 14)); // NOI18N
-        txtCaracteristica.setText("jTextField1");
         txtCaracteristica.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
+        jPanel3.add(txtCaracteristica, new org.netbeans.lib.awtextra.AbsoluteConstraints(124, 334, 170, -1));
 
         jButton1.setFont(new java.awt.Font("Sans Serif Collection", 1, 14)); // NOI18N
         jButton1.setText("AGREGAR");
@@ -272,6 +338,7 @@ private void limpiarCampos() {
                 jButton1ActionPerformed(evt);
             }
         });
+        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 483, -1, -1));
 
         jButton2.setFont(new java.awt.Font("Sans Serif Collection", 1, 14)); // NOI18N
         jButton2.setText("ELIMINAR");
@@ -281,6 +348,7 @@ private void limpiarCampos() {
                 jButton2MouseClicked(evt);
             }
         });
+        jPanel3.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 483, -1, -1));
 
         jButton3.setFont(new java.awt.Font("Sans Serif Collection", 1, 14)); // NOI18N
         jButton3.setText("EDITAR");
@@ -290,80 +358,8 @@ private void limpiarCampos() {
                 jButton3MouseClicked(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNombre)
-                    .addComponent(txtEdad)
-                    .addComponent(txtAltura)
-                    .addComponent(txtTipoDeHoja)
-                    .addComponent(txtEspecie)
-                    .addComponent(txtCaracteristica)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(ComboTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addContainerGap(25, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(ComboTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtAltura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtTipoDeHoja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(txtEspecie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(txtCaracteristica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(107, 107, 107)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addContainerGap(75, Short.MAX_VALUE))
-        );
+        jPanel3.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(109, 483, 73, -1));
+        jPanel3.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 290, -1, -1));
 
         jSplitPane1.setLeftComponent(jPanel3);
 
@@ -385,7 +381,6 @@ private void limpiarCampos() {
             txtEdad.getText().trim().isEmpty() ||
             txtAltura.getText().trim().isEmpty() ||
             txtTipoDeHoja.getText().trim().isEmpty() ||
-            txtEspecie.getText().trim().isEmpty() ||
             txtCaracteristica.getText().trim().isEmpty()) {
             
             JOptionPane.showMessageDialog(this, 
@@ -402,7 +397,6 @@ private void limpiarCampos() {
             txtEdad.getText(),
             txtAltura.getText(),
             txtTipoDeHoja.getText(),
-            txtEspecie.getText(),
             txtCaracteristica.getText()
         });
         
@@ -449,7 +443,8 @@ private void limpiarCampos() {
     txtEdad.setText(modelo.getValueAt(filaSeleccionada, 2).toString());
     txtAltura.setText(modelo.getValueAt(filaSeleccionada, 3).toString());
     txtTipoDeHoja.setText(modelo.getValueAt(filaSeleccionada, 4).toString());
-    txtEspecie.setText(modelo.getValueAt(filaSeleccionada, 5).toString());
+    String valor = modelo.getValueAt(filaSeleccionada, 5).toString();
+    jCheckBox1.setSelected(valor.equals("Sí"));     
     txtCaracteristica.setText(modelo.getValueAt(filaSeleccionada, 6).toString());
 
     modelo.removeRow(filaSeleccionada);
@@ -503,9 +498,11 @@ private void limpiarCampos() {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ComboTipo;
+    private javax.swing.JCheckBox checkBoxCaracteristica;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -523,7 +520,6 @@ private void limpiarCampos() {
     private javax.swing.JTextField txtAltura;
     private javax.swing.JTextField txtCaracteristica;
     private javax.swing.JTextField txtEdad;
-    private javax.swing.JTextField txtEspecie;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTipoDeHoja;
     // End of variables declaration//GEN-END:variables

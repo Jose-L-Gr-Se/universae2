@@ -11,25 +11,15 @@ import java.util.ArrayList;
  * @author joseg
  */
 public class Hongos extends SerVivoPadre {
-    private boolean esToxico;
     private String tipoEsporas;
     private String modoReproduccion;
 
     public Hongos(boolean esToxico, String tipoEsporas, String modoReproduccion, String nombre, int edad) {
         super(nombre, edad);
-        this.esToxico = esToxico;
         this.tipoEsporas = tipoEsporas;
         this.modoReproduccion = modoReproduccion;
     }
-
-    public boolean isEsToxico() {
-        return esToxico;
-    }
-
-    public void setEsToxico(boolean esToxico) {
-        this.esToxico = esToxico;
-    }
-
+   
     public String getTipoEsporas() {
         return tipoEsporas;
     }
@@ -55,5 +45,9 @@ public class Hongos extends SerVivoPadre {
     
     return hongos;
 }
+
+    public Object getTamaño() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }
