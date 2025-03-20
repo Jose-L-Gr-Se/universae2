@@ -26,12 +26,12 @@ public class Launcher extends javax.swing.JFrame {
     public Launcher() {
         initComponents();
         BarraEscudos();
-        
-            }
-    
+        PanelHome panel1 = new PanelHome();
+        PanelInPanel(Content, panel1);
+    }
 
-    private void BarraEscudos(){
-    
+    private void BarraEscudos() {
+
         Utilidades.SetImageLabel(jLabel2, "src/imagenes/LauncherButton0.png", true);
         Utilidades.SetImageLabel(jLabel3, "src/imagenes/LauncherButton1.png", true);
         Utilidades.SetImageLabel(jLabel4, "src/imagenes/LauncherButton2.png", true);
@@ -47,9 +47,11 @@ public class Launcher extends javax.swing.JFrame {
         Utilidades.SetImageLabel(jLabel14, "src/imagenes/LauncherButton12.png", true);
         Utilidades.SetImageLabel(jLabel15, "src/imagenes/LauncherButton13.png", true);
 
-}     
-  
+    }
 
+    public JPanel getContentPanel(){
+        return Content;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,6 +61,7 @@ public class Launcher extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Content = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -75,19 +78,26 @@ public class Launcher extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        Content = new javax.swing.JPanel();
 
         setAlwaysOnTop(true);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1920, 1080));
         setResizable(false);
         setSize(new java.awt.Dimension(1920, 1080));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Content.setOpaque(false);
+        Content.setLayout(new java.awt.BorderLayout());
+        getContentPane().add(Content, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 280, 1340, 710));
 
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 15, 5));
 
         jLabel2.setPreferredSize(new java.awt.Dimension(80, 100));
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel2);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/LauncherButton1.png"))); // NOI18N
@@ -136,21 +146,12 @@ public class Launcher extends javax.swing.JFrame {
         jLabel1.setAlignmentY(0.0F);
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        javax.swing.GroupLayout ContentLayout = new javax.swing.GroupLayout(Content);
-        Content.setLayout(ContentLayout);
-        ContentLayout.setHorizontalGroup(
-            ContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1550, Short.MAX_VALUE)
-        );
-        ContentLayout.setVerticalGroup(
-            ContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 880, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(Content, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 200, 1550, 880));
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+       Utilidades.volverAlHome(Content);
+    }//GEN-LAST:event_jLabel2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -185,6 +186,7 @@ public class Launcher extends javax.swing.JFrame {
                 new Launcher().setVisible(true);
             }
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
