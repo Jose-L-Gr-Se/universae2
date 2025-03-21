@@ -21,9 +21,7 @@ public class PanelCarrusel extends javax.swing.JPanel {
     private int imagenActual = 0; //Índice de la imagen actual
     public PanelCarrusel() {
         initComponents();
-        actualizarImagen();
-        Utilidades.SetImageLabelDimension(imageLabel, "src/imagenes/Embarque0.png", new Dimension(imageLabel.getWidth(), imageLabel.getHeight()), true);
-                Utilidades.SetImageLabelDimension(jLabel3, "src/imagenes/Barrita aislada descripción.png", new Dimension(jLabel3.getWidth(), jLabel3.getHeight()), true);
+        Utilidades.SetImageLabelDimension(jLabel3, "src/imagenes/Barrita aislada descripción.png", new Dimension(jLabel3.getWidth(), jLabel3.getHeight()), true);
 
     }
 
@@ -51,11 +49,16 @@ public class PanelCarrusel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
         jLabel4 = new javax.swing.JLabel();
         imageLabel = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        imageLabel2 = new javax.swing.JLabel();
+        imageLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
 
         setMaximumSize(new java.awt.Dimension(1340, 710));
         setMinimumSize(new java.awt.Dimension(1340, 710));
@@ -64,26 +67,48 @@ public class PanelCarrusel extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(1340, 710));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel1.setForeground(java.awt.Color.black);
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText(">");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1260, 300, -1, -1));
+        jScrollPane1.setViewportView(jTextPane1);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel2.setForeground(java.awt.Color.black);
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("<");
-        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 300, -1, -1));
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 530, 20, 40));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 600, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Embarque y desembarque en helicóptero");
+        jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 540, -1, -1));
 
+        imageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Embarque0.png"))); // NOI18N
-        add(imageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 10, -1, -1));
+        imageLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        add(imageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1550, 880));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel2.setForeground(java.awt.Color.black);
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Flecha izquierda.png"))); // NOI18N
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, -1, -1));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel1.setForeground(java.awt.Color.black);
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Flecha derecha.png"))); // NOI18N
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1330, 220, -1, -1));
+
+        imageLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Cuadrado fondo enfocado.png"))); // NOI18N
+        imageLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        add(imageLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, 1550, 880));
+
+        imageLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        imageLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Cuadrado fondo enfocado.png"))); // NOI18N
+        imageLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        add(imageLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 30, 740, 880));
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 530, 20, 40));
+
+        jTextField1.setBackground(new java.awt.Color(0, 0, 0));
+        jTextField1.setForeground(new java.awt.Color(255, 255, 255));
+        jTextField1.setText("Embarque y desembarque en helicóptero");
+        jTextField1.setBorder(null);
+        add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 580, -1, -1));
 
         getAccessibleContext().setAccessibleName("");
         getAccessibleContext().setAccessibleDescription("");
@@ -92,9 +117,14 @@ public class PanelCarrusel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imageLabel;
+    private javax.swing.JLabel imageLabel1;
+    private javax.swing.JLabel imageLabel2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextPane jTextPane1;
     // End of variables declaration//GEN-END:variables
 }

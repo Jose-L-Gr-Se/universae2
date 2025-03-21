@@ -87,7 +87,7 @@ public class Launcher extends javax.swing.JFrame {
 
         Content.setOpaque(false);
         Content.setLayout(new java.awt.BorderLayout());
-        getContentPane().add(Content, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 280, 1340, 710));
+        getContentPane().add(Content, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 210, 1530, 860));
 
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 15, 5));

@@ -21,11 +21,6 @@ public class PanelHome extends javax.swing.JPanel {
     public PanelHome() {
         initComponents();
         ImageIcon imagen = (ImageIcon) Card1.getIcon();
-        Utilidades.SetImageLabelDimension(Card2, "src/imagenes/Grado1.png", new Dimension(Card2.getWidth(), Card2.getHeight()), true);
-        Utilidades.SetImageLabelDimension(Card3, "src/imagenes/Grado2.png", new Dimension(Card3.getWidth(), Card3.getHeight()), true);
-        Utilidades.SetImageLabelDimension(Card4, "src/imagenes/Grado3.png", new Dimension(Card4.getWidth(), Card4.getHeight()), true);
-        Utilidades.SetImageLabelDimension(Card5, "src/imagenes/Grado4.png", new Dimension(Card5.getWidth(), Card5.getHeight()), true);
-        Utilidades.SetImageLabelDimension(Card6, "src/imagenes/Grado5.png", new Dimension(Card6.getWidth(), Card6.getHeight()), true);
 //        Utilidades.SetImageLabel(Card1, "src/imagenes/Grado0.png", true);
 //        Utilidades.SetImageLabelDimension(Card2, "src/imagenes/Grado1.png",new Dimension (200,200), true);
 //        Utilidades.SetImageLabelDimension(Card3, "src/imagenes/Grado2.png",new Dimension (200,200), true);
